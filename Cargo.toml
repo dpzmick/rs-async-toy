@@ -1,0 +1,8 @@
+[package]
+name = "rs-async"
+version = "0.1.0"
+authors = ["David Zmick <dpzmick@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+libc = "0.2.65"
