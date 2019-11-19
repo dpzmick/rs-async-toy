@@ -114,9 +114,3 @@ fn main() {
     }
     exec.run_till_complete();
 }
-
-// first sketch:
-// - region contains 2xSPSC queue. client->server and server->client
-// - queue is poll-mode, you poll waiting for something to appear
-// - request structs are enqueue from some client amanged memory
-//   regions (server doesn't manage memory)
