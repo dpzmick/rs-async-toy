@@ -54,10 +54,24 @@ impl MappedRegion {
         })
     }
 
-    // should this be mutable?
-    // isn't unsafe, there's nothing unsafe about getting this value
-    pub fn raw(&mut self) -> *mut () {
-        return self.ptr as *mut (); // this is apparently rust for void*
+    pub fn as_slice(&mut self) -> &mut [u8] {
+        unsafe { std::slice::from_raw_parts_mut(self.ptr as *mut u8, self.sz) }
+    }
+
+    pub fn as_slices(&mut self, sizes: &Vec<usize>) -> Option<Vec<&mut [u8]>> {
+        let req_sz: usize = sizes.iter().sum();
+        if req_sz > self.sz { return None; }
+
+        unsafe {
+            let mut curr = self.ptr;
+            let mut ret = Vec::new();
+            for size in sizes {
+                ret.push(std::slice::from_raw_parts_mut(curr as *mut u8, *size));
+                curr = curr.add(*size);
+            }
+
+            return Some( ret );
+        }
     }
 }
 
